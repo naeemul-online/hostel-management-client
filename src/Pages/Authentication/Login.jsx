@@ -88,16 +88,27 @@ const Login = () => {
               />
             </div>
           </form>
-          <div>
-            <p>
-              Have not account? Please{" "}
-              <Link to="/signUp" className="text-blue-600">
-                Sign up
-              </Link>
+          <div className="flex items-center pt-4 space-x-1">
+            <div className="flex-1 h-px sm:w-16 dark:bg-gray-300"></div>
+            <p className="px-3 text-sm dark:text-gray-600">
+              Login with social accounts
             </p>
+            <div className="flex-1 h-px sm:w-16 dark:bg-gray-300"></div>
           </div>
           <div>
             <SocialLogin></SocialLogin>
+          </div>
+          <div className="pb-4">
+            <p className="text-xs text-center sm:px-6 dark:text-gray-600">
+              Dont have an account?
+              <Link
+                to="/signUp"
+                rel="noopener noreferrer"
+                className="underline dark:text-gray-800 text-primary"
+              >
+                Sign up
+              </Link>
+            </p>
           </div>
         </div>
       </div>

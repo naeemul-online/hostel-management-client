@@ -124,7 +124,7 @@ const Navbar = () => {
           </div>
         ) : (
           <Link to="/login" className="px-1">
-            Join Us
+            <button className="btn btn-primary">Join Us</button>
           </Link>
         )}
       </div>

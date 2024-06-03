@@ -118,16 +118,27 @@ const SignUp = () => {
               ></input>
             </div>
           </form>
-          <div>
-            <p>
-              Already have an account? Please{" "}
-              <Link to="/login" className="text-blue-600">
-                Log In
-              </Link>
+          <div className="flex items-center pt-4 space-x-1">
+            <div className="flex-1 h-px sm:w-16 dark:bg-gray-300"></div>
+            <p className="px-3 text-sm dark:text-gray-600">
+              Login with social accounts
             </p>
+            <div className="flex-1 h-px sm:w-16 dark:bg-gray-300"></div>
           </div>
           <div>
             <SocialLogin></SocialLogin>
+          </div>
+          <div className="pb-4">
+            <p className="text-xs text-center sm:px-6 dark:text-gray-600">
+              Already have an account?
+              <Link
+                to="/login"
+                rel="noopener noreferrer"
+                className="underline dark:text-gray-800 text-primary"
+              >
+                Log In
+              </Link>
+            </p>
           </div>
         </div>
       </div>
