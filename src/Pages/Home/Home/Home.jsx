@@ -2,6 +2,7 @@ import AboutUs from "../AboutUs/AboutUs";
 import Testimonials from "../Testimonials/Testimonials";
 import Banner from "../Banner/Banner";
 import MealsByCategory from "../MealsByCategory/MealsByCategory";
+import MembershipSection from "../MembershipSection/MembershipSection";
 
 const Home = () => {
   const sampleMeals = [
@@ -94,6 +95,7 @@ const Home = () => {
     <div>
       <Banner></Banner>
       <MealsByCategory meals={sampleMeals}></MealsByCategory>
+      <MembershipSection></MembershipSection>
       <AboutUs></AboutUs>
       <Testimonials></Testimonials>
     </div>

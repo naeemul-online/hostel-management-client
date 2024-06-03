@@ -7,6 +7,7 @@ import Login from "../../Pages/Authentication/Login";
 import SignUp from "../../Pages/Authentication/SignUp";
 import PrivateRoute from "./PrivateRoute";
 import Private from "../../Pages/Private/Private";
+import MealDetails from "../../Pages/Meals/MealDetails/MealDetails";
 
 export const router = createBrowserRouter([
   {
@@ -26,8 +27,17 @@ export const router = createBrowserRouter([
         element: <UpcomingMeals></UpcomingMeals>,
       },
       {
+        path: "details/:id",
+        element: <MealDetails></MealDetails>
+        
+      },
+      {
         path: "private",
-        element: <PrivateRoute><Private></Private></PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <Private></Private>
+          </PrivateRoute>
+        ),
       },
       {
         path: "login",

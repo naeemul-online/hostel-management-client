@@ -16,7 +16,7 @@ const Banner = () => {
           </p>
           <label className="input input-bordered flex items-center gap-2">
             <input type="text" className="grow" placeholder="Search for meals or features..." />
-            <button className="btn btn-primary -mr-6">Search</button>
+            <button className="btn  bg-orange-500 hover:bg-orange-600 -mr-6">Search</button>
           </label>
         </div>
       </div>

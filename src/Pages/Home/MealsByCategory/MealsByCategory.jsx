@@ -3,6 +3,7 @@ import PropTypes from "prop-types"; // ES6
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import MealCard from "../../../components/MealCard/MealCard";
+import Heading from "../../../components/Heading/Heading";
 
 const MealsByCategory = ({ meals }) => {
   const categories = ["Breakfast", "Lunch", "Dinner", "All Meals"];
@@ -16,7 +17,7 @@ const MealsByCategory = ({ meals }) => {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <h2 className="text-3xl font-bold text-center mb-8">Meals by Category</h2>
+      <Heading Heading="Meals by Category"></Heading>
       <Tabs>
         <TabList className="flex justify-center mb-6">
           {categories.map((category, index) => (
