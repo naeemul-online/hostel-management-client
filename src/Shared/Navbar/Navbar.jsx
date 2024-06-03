@@ -1,11 +1,20 @@
 import { Link } from "react-router-dom";
 import logo from "/logo.png";
+import { useContext } from "react";
+import { AuthContext } from "../../Provider/AuthProvider";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
+  // console.log(user);
+  const handleLogout = () => {
+    logOut();
+    toast.success("Log Out Successfully");
+  };
   const navOptions = (
     <>
       <li>
-        <Link to="/home">Home</Link>
+        <Link to="/">Home</Link>
       </li>
 
       <li>
@@ -13,6 +22,9 @@ const Navbar = () => {
       </li>
       <li>
         <Link to="/upcomingMeals">Upcoming Meals</Link>
+      </li>
+      <li>
+        <Link to="/private">Private Routes</Link>
       </li>
       <button className="btn btn-ghost btn-circle">
         <div className="indicator">
@@ -75,39 +87,46 @@ const Navbar = () => {
       <div className="navbar-center justify-end hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{navOptions}</ul>
       </div>
-      <div className="navbar-end">
-        <Link to="/login" className="px-1">
-          Join Us
-        </Link>
 
-        <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
-          >
-            <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-              />
+      <div className="navbar-end">
+        {user ? (
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle avatar"
+            >
+              <div className="w-10 rounded-full">
+                <img
+                  alt="Tailwind CSS Navbar component"
+                  src={
+                    user?.photoURL
+                      ? user.photoURL
+                      : `https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg`
+                  }
+                />
+              </div>
             </div>
+            <ul
+              tabIndex={0}
+              className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <p>{user?.displayName ? user.displayName : "User"}</p>
+              </li>
+              <li>
+                <a>Dashboard</a>
+              </li>
+              <li className="btn btn-primary mt-1" onClick={handleLogout}>
+                Logout
+              </li>
+            </ul>
           </div>
-          <ul
-            tabIndex={0}
-            className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
-          >
-            <li>
-              <a>User</a>
-            </li>
-            <li>
-              <a>Dashboard</a>
-            </li>
-            <li>
-              <a>Logout</a>
-            </li>
-          </ul>
-        </div>
+        ) : (
+          <Link to="/login" className="px-1">
+            Join Us
+          </Link>
+        )}
       </div>
     </div>
   );

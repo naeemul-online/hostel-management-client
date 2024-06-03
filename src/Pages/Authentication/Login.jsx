@@ -1,14 +1,18 @@
 import { useForm } from "react-hook-form";
 import SocialLogin from "./SocialLogin";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { Helmet } from "react-helmet-async";
+import toast from "react-hot-toast";
 
 const Login = () => {
   //   const [disable, setDisable] = useState(true);
   // const { signIn } = useContext(AuthContext);
   const { signIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const {
     register,
@@ -21,6 +25,8 @@ const Login = () => {
     console.log(data);
     signIn(data.email, data.password).then((res) => {
       console.log(res.user);
+      toast.success("login successfully");
+      navigate(from, { replace: true });
     });
   };
 

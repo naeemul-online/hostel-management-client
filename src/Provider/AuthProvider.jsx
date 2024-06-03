@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import PropTypes from "prop-types"; // ES6
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -7,15 +8,13 @@ import {
   signOut,
 } from "firebase/auth";
 import { app } from "../firebase/firebase.config";
+
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  if (loading) {
-    <progress className="progress w-56"></progress>;
-  }
 
   // create user
   const createUser = (email, password) => {
@@ -26,7 +25,7 @@ const AuthProvider = ({ children }) => {
   // login user
   const signIn = (email, password) => {
     setLoading(true);
-    return signInWithEmailAndPassword(email, password);
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   // Logout user
@@ -41,9 +40,7 @@ const AuthProvider = ({ children }) => {
       console.log("current user", currentUser);
       setLoading(false);
     });
-    return () => {
-      return unsubscribe();
-    };
+    return () => unsubscribe();
   }, []);
 
   const authInfo = {
@@ -56,8 +53,13 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={authInfo}>
+      {loading ? <span className="loading loading-dots loading-lg"></span> : children}
+    </AuthContext.Provider>
   );
 };
 
 export default AuthProvider;
+AuthProvider.propTypes = {
+  children: PropTypes.object,
+};
