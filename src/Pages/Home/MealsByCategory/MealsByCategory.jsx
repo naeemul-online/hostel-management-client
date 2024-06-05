@@ -4,8 +4,10 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import MealCard from "../../../components/MealCard/MealCard";
 import Heading from "../../../components/Heading/Heading";
+import useMeals from "../../../hooks/useMeals";
 
-const MealsByCategory = ({ meals }) => {
+const MealsByCategory = () => {
+  const [meals] = useMeals()
   const categories = ["Breakfast", "Lunch", "Dinner", "All Meals"];
 
   const filterMealsByCategory = (category) => {

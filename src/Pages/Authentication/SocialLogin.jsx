@@ -1,16 +1,17 @@
 import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
-import { useNavigate } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SocialLogin = () => {
   const { googleLogin, gitHubLogin } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const handleGoogleLogin = () => {
     googleLogin()
       .then((res) => {
         console.log(res.user);
-        navigate("/");
+        navigate(from, { replace: true });
 
         // const userInfo = {
         //   email: res.user?.email,

@@ -1,20 +1,130 @@
+import PropTypes from "prop-types"; // ES6
+import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import Heading from "../Heading/Heading";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import ReviewCard from "../ReviewCard/ReviewCard";
+import useLikes from "../../hooks/useLikes";
 
 const MealDetailCard = ({ meal }) => {
   const { user } = useAuth();
+  const [like, refetch] = useLikes();
+  // console.log(like.length)
+  const { title, image, description } = meal;
+  const [likeCount, setLikeCount] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
+  const axiosSecure = useAxiosSecure();
 
   const handleLikeBtn = () => {
     if (user && user.email) {
-        // TODO:
+      const likedMeal = {
+        mealTitle: title,
+        mealImg: image,
+        userEmail: user.email,
+        userName: user.displayName,
+        userImg: user.photoURL,
+        likeCount: likeCount,
+      };
+      console.log(likedMeal);
+
+      axiosSecure
+        .post("/likes", likedMeal)
+        .then((res) => {
+          console.log(res.data);
+          setLikeCount(likeCount + 1);
+          if (res.data.insertedId) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: `Wow! You liked ${title}`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            // refetch the card
+            refetch();
+          }
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 400) {
+            Swal.fire({
+              title: `Already! You liked ${title}`,
+              text: "Thank you",
+              icon: "warning",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: "Something went wrong",
+              icon: "error",
+              confirmButtonColor: "#d33",
+            });
+          }
+        });
     } else {
-      navigate("/login");
+      Swal.fire({
+        title: "You are not logged in?",
+        text: "Please log in",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Login!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login", { state: { from: location } });
+        }
+      });
     }
   };
+  const handleReviewBtn = (e) => {
+    e.preventDefault();
+    const review = e.target.review.value;
+    if (user && user.email) {
+      const reviewMeal = {
+        mealTitle: title,
+        mealImg: image,
+        userEmail: user.email,
+        userName: user.displayName,
+        userImg: user.photoURL,
+        review,
+      };
+      console.log(reviewMeal);
+      axiosSecure.post("/reviews", reviewMeal).then((res) => {
+        console.log(res.data);
+        if (res.data.insertedId) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: `Wow! your ${title} reviews saved`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+    } else {
+      Swal.fire({
+        title: "You are not logged in?",
+        text: "Please log in",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Login!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login", { state: { from: location } });
+        }
+      });
+    }
+  };
+
   return (
-    <section key={meal.id} className="">
+    <section className="">
       <div className="container max-w-6xl p-6 mx-auto space-y-6 sm:space-y-12">
         <a
           rel="noopener noreferrer"
@@ -22,7 +132,7 @@ const MealDetailCard = ({ meal }) => {
           className="block max-w-sm gap-3 mx-auto sm:max-w-full group hover:no-underline focus:no-underline lg:grid lg:grid-cols-12"
         >
           <img
-            src={meal.image}
+            src={image}
             alt=""
             className="object-cover w-full h-64 rounded sm:h-96 lg:col-span-7"
           />
@@ -33,22 +143,21 @@ const MealDetailCard = ({ meal }) => {
             <span className="text-xs text-gray-400">
               Post Time: February 19, 2021
             </span>
-            <p>{meal.description}</p>
+            <p>{description}</p>
             <button
               onClick={handleLikeBtn}
-              className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2  rounded"
+              className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded"
             >
-              Like <span>0</span>
+              Like <span>{like.length}</span>
             </button>
-
             <button className="mt-4 ml-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
               Request Meal
             </button>
-
             <div className="mt-8">
-              <form className="mt-4">
+              <form onSubmit={handleReviewBtn} className="mt-4">
                 <textarea
-                  className="w-full ro p-2 border rounded"
+                  name="review"
+                  className="w-full p-2 border rounded"
                   placeholder="Write your review here"
                 ></textarea>
                 <button
@@ -61,55 +170,19 @@ const MealDetailCard = ({ meal }) => {
             </div>
           </div>
         </a>
-
-        <Heading Heading="Review"></Heading>
-
+        <Heading Heading="Review" />
         {/* Review card */}
-
         <div className="grid justify-center grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="container flex flex-col w-full max-w-lg p-6 mx-auto divide-y rounded-md divide-gray-700 bg-gray-900 text-gray-100">
-            <div className="flex justify-between p-4">
-              <div className="flex space-x-4">
-                <div>
-                  <img
-                    src="https://source.unsplash.com/100x100/?portrait"
-                    alt=""
-                    className="object-cover w-12 h-12 rounded-full bg-gray-500"
-                  />
-                </div>
-                <div>
-                  <h4 className="font-bold">Leroy Jenkins</h4>
-                  <span className="text-xs text-gray-400">2 days ago</span>
-                </div>
-              </div>
-              <div className="flex items-center space-x-2 text-yellow-500">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"
-                  className="w-5 h-5 fill-current"
-                >
-                  <path d="M494,198.671a40.536,40.536,0,0,0-32.174-27.592L345.917,152.242,292.185,47.828a40.7,40.7,0,0,0-72.37,0L166.083,152.242,50.176,171.079a40.7,40.7,0,0,0-22.364,68.827l82.7,83.368-17.9,116.055a40.672,40.672,0,0,0,58.548,42.538L256,428.977l104.843,52.89a40.69,40.69,0,0,0,58.548-42.538l-17.9-116.055,82.7-83.368A40.538,40.538,0,0,0,494,198.671Zm-32.53,18.7L367.4,312.2l20.364,132.01a8.671,8.671,0,0,1-12.509,9.088L256,393.136,136.744,453.3a8.671,8.671,0,0,1-12.509-9.088L144.6,312.2,50.531,217.37a8.7,8.7,0,0,1,4.778-14.706L187.15,181.238,248.269,62.471a8.694,8.694,0,0,1,15.462,0L324.85,181.238l131.841,21.426A8.7,8.7,0,0,1,461.469,217.37Z"></path>
-                </svg>
-                <span className="text-xl font-bold">4.5</span>
-              </div>
-            </div>
-            <div className="p-4 space-y-2 text-sm text-gray-400">
-              <p>
-                Vivamus sit amet turpis leo. Praesent varius eleifend elit, eu
-                dictum lectus consequat vitae. Etiam ut dolor id justo fringilla
-                finibus.
-              </p>
-              <p>
-                Donec eget ultricies diam, eu molestie arcu. Etiam nec lacus eu
-                mauris cursus venenatis. Maecenas gravida urna vitae accumsan
-                feugiat. Vestibulum commodo, ante sit urna purus rutrum sem.
-              </p>
-            </div>
-          </div>
+          {/* Reviews will gose here */}
+          <ReviewCard></ReviewCard>
         </div>
       </div>
     </section>
   );
+};
+
+MealDetailCard.propTypes = {
+  meal: PropTypes.object.isRequired,
 };
 
 export default MealDetailCard;
