@@ -114,7 +114,7 @@ const Navbar = () => {
                 <p>{user?.displayName ? user.displayName : "User"}</p>
               </li>
               <li>
-                <a>Dashboard</a>
+                <Link to='dashboard/admin'>Dashboard</Link>
               </li>
               <li className="btn btn-primary mt-1" onClick={handleLogout}>
                 Logout
