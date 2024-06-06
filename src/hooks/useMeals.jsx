@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import useAxiosSecure from "./useAxiosSecure";
 
+
 const useMeals = () => {
   const axiosSecure = useAxiosSecure();
   const [meals, setMeals] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  console.log(loading);
+  // console.log(loading);
 
   useEffect(() => {
     axiosSecure("/meals").then((res) => {
@@ -14,7 +15,7 @@ const useMeals = () => {
       setMeals(res.data);
       setLoading(false);
     });
-  }, []);
+  }, [axiosSecure]);
   return [meals];
 };
 

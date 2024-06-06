@@ -1,16 +1,15 @@
 import PropTypes from "prop-types"; // ES6
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import Heading from "../Heading/Heading";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import ReviewCard from "../ReviewCard/ReviewCard";
 import useLikes from "../../hooks/useLikes";
-
+import ReviewsSection from "../ReviewCard/ReviewsSection";
 const MealDetailCard = ({ meal }) => {
   const { user } = useAuth();
   const [like, refetch] = useLikes();
+
   // console.log(like.length)
   const { title, image, description } = meal;
   const [likeCount, setLikeCount] = useState(0);
@@ -81,31 +80,52 @@ const MealDetailCard = ({ meal }) => {
       });
     }
   };
-  const handleReviewBtn = (e) => {
-    e.preventDefault();
-    const review = e.target.review.value;
+
+  const handleMealRequest = () => {
     if (user && user.email) {
-      const reviewMeal = {
+      const requestedMeal = {
         mealTitle: title,
         mealImg: image,
         userEmail: user.email,
         userName: user.displayName,
         userImg: user.photoURL,
-        review,
+        status: "pending",
       };
-      console.log(reviewMeal);
-      axiosSecure.post("/reviews", reviewMeal).then((res) => {
-        console.log(res.data);
-        if (res.data.insertedId) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: `Wow! your ${title} reviews saved`,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      });
+      console.log(requestedMeal);
+
+      axiosSecure
+        .post("/requestedMeal", requestedMeal)
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.insertedId) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: `Your request submitted`,
+              showConfirmButton: false,
+              timer: 1500,
+            }); // refetch the card
+            refetch();
+          }
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 400) {
+            Swal.fire({
+              title: `Already! requested`,
+              text: "Thank you",
+              icon: "warning",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: "Something went wrong",
+              icon: "error",
+              confirmButtonColor: "#d33",
+            });
+          }
+        });
     } else {
       Swal.fire({
         title: "You are not logged in?",
@@ -150,32 +170,16 @@ const MealDetailCard = ({ meal }) => {
             >
               Like <span>{like.length}</span>
             </button>
-            <button className="mt-4 ml-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <button
+              onClick={handleMealRequest}
+              className="mt-4 ml-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            >
               Request Meal
             </button>
-            <div className="mt-8">
-              <form onSubmit={handleReviewBtn} className="mt-4">
-                <textarea
-                  name="review"
-                  className="w-full p-2 border rounded"
-                  placeholder="Write your review here"
-                ></textarea>
-                <button
-                  type="submit"
-                  className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Submit Review
-                </button>
-              </form>
-            </div>
           </div>
         </a>
-        <Heading Heading="Review" />
-        {/* Review card */}
-        <div className="grid justify-center grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Reviews will gose here */}
-          <ReviewCard></ReviewCard>
-        </div>
+
+        {<ReviewsSection></ReviewsSection>}
       </div>
     </section>
   );
