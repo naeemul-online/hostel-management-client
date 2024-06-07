@@ -5,8 +5,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useReviews from "../../hooks/useReviews";
 import ReviewCard from "./ReviewCard";
 import Heading from "../Heading/Heading";
+import PropTypes from "prop-types"; // ES6
 
-const ReviewsSection = () => {
+const ReviewsSection = ({ title }) => {
+  // console.log(title);
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
@@ -21,6 +23,7 @@ const ReviewsSection = () => {
         userEmail: user.email,
         userName: user.displayName,
         userImg: user.photoURL,
+        mealTitle: title,
         review,
       };
       console.log(reviewMeal);
@@ -34,7 +37,7 @@ const ReviewsSection = () => {
             showConfirmButton: false,
             timer: 1500,
           });
-          
+
           refetch();
         }
       });
@@ -56,7 +59,7 @@ const ReviewsSection = () => {
   };
   return (
     <div className="mt-8">
-         <Heading Heading="Review" />       
+      <Heading Heading="Review" />
       <form onSubmit={handleReviewBtn} className="mt-4">
         <textarea
           name="review"
@@ -78,6 +81,9 @@ const ReviewsSection = () => {
       </div>
     </div>
   );
+};
+ReviewsSection.propTypes = {
+  title: PropTypes.string,
 };
 
 export default ReviewsSection;

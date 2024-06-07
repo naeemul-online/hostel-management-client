@@ -3,6 +3,9 @@ import useAuth from "../../hooks/useAuth";
 
 const Dashboard = () => {
   const {user} = useAuth();
+// TODO: get isAdmin value from the database
+  // const isAdmin = true;
+
   console.log(user)
   return (
     <div>
@@ -62,6 +65,7 @@ const Dashboard = () => {
                     <span>My Profile</span>
                   </Link>
                 </li>
+             
             
                 <li>
                   <Link
@@ -116,6 +120,7 @@ const Dashboard = () => {
                   </Link>
                 </li>
               </ul>
+              {/* Shared Nav link */}
               <ul className="pt-4 pb-2 space-y-1 text-sm">
                 <li>
                   <Link

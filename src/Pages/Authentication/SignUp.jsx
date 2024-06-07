@@ -1,21 +1,46 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SocialLogin from "./SocialLogin";
-import { useContext } from "react";
-import { AuthContext } from "../../Provider/AuthProvider";
 import { Helmet } from "react-helmet-async";
+import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const SignUp = () => {
-  const { createUser } = useContext(AuthContext);
+  const { createUser, updateUserProfile } = useAuth();
+  const axiosPublic = useAxiosPublic();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
     console.log(data);
-    createUser(data.email, data.password);
+    createUser(data.email, data.password).then((result) => {
+      // console.log(result.user)
+      const loggedUser = result.user;
+      console.log(loggedUser);
+      updateUserProfile(data.name, data.photoURL).then(() => {
+        const userInfo = {
+          name: data.name,
+          email: data.email,
+        };
+        console.log(userInfo);
+        axiosPublic.post("/users", userInfo).then((res) => {
+          if (res.data.insertedId) {
+            console.log("user added to the database");
+            reset();
+            navigate("/");
+            toast.success("User updated successfully!");
+          }
+        });
+
+        // create user entry in the database
+      });
+    });
   };
   return (
     <div className="hero min-h-screen bg-base-200">

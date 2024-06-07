@@ -10,6 +10,7 @@ import Private from "../../Pages/Private/Private";
 import MealDetails from "../../Pages/MealDetails/MealDetails";
 import Dashboard from "../../Layout/Dashboard/Dashboard";
 import Admin from "../../Pages/Dashborad/Admin/Admin";
+import User from "../../Pages/Dashborad/User/User";
 import RequestedMeal from "../../Pages/Dashborad/RequestedMeal/RequestedMeal";
 import MyReviews from "../../Pages/Dashborad/MyReviews/MyReviews";
 import PaymentHistory from "../../Pages/Dashborad/PaymentHistory/PaymentHistory";

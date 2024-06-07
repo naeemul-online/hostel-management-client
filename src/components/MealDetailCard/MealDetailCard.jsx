@@ -179,7 +179,7 @@ const MealDetailCard = ({ meal }) => {
           </div>
         </a>
 
-        {<ReviewsSection></ReviewsSection>}
+        {<ReviewsSection title={title}></ReviewsSection>}
       </div>
     </section>
   );
