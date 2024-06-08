@@ -9,11 +9,11 @@ import toast from "react-hot-toast";
 const Login = () => {
   //   const [disable, setDisable] = useState(true);
   // const { signIn } = useContext(AuthContext);
-  const { signIn } = useContext(AuthContext);
+  const { signIn, setLoading } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-  console.log('location of state', location.state)
+  console.log("location of state", location.state);
 
   const {
     register,
@@ -23,12 +23,19 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-    signIn(data.email, data.password).then((res) => {
-      console.log(res.user);
-      toast.success("login successfully");
-      navigate(from, { replace: true });
-    });
+    // console.log(data);
+    signIn(data.email, data.password)
+      .then((res) => {
+        console.log(res.user);
+        toast.success("login successfully");
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        toast.error(error.message);
+        setLoading(false);
+
+        // ..
+      });
   };
 
   return (

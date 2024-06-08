@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
-  const { user, logOut } = useAuth()
+  const { user, logOut } = useAuth();
   // console.log(user);
   const handleLogout = () => {
     logOut();
@@ -21,9 +21,6 @@ const Navbar = () => {
       </li>
       <li>
         <Link to="/upcomingMeals">Upcoming Meals</Link>
-      </li>
-      <li>
-        <Link to="/private">Private Routes</Link>
       </li>
       <button className="btn btn-ghost btn-circle">
         <div className="indicator">
@@ -114,16 +111,21 @@ const Navbar = () => {
                 <p>{user?.displayName ? user.displayName : "User"}</p>
               </li>
               <li>
-                <Link to='dashboard'>Dashboard</Link>
+                <Link to="dashboard">Dashboard</Link>
               </li>
-              <li className="btn btn-primary  bg-orange-500 hover:bg-orange-600  mt-1" onClick={handleLogout}>
+              <li
+                className="btn btn-primary  bg-orange-500 hover:bg-orange-600  mt-1"
+                onClick={handleLogout}
+              >
                 Logout
               </li>
             </ul>
           </div>
         ) : (
           <Link to="/login" className="px-1">
-            <button className="btn bg-orange-500 hover:bg-orange-600">Join Us</button>
+            <button className="btn bg-orange-500 hover:bg-orange-600">
+              Join Us
+            </button>
           </Link>
         )}
       </div>

@@ -36,6 +36,7 @@ export const router = createBrowserRouter([
       {
         path: "meal/:id",
         element: <MealDetails></MealDetails>,
+        // loader: ({ params }) => fetch(`http://localhost:5000/meals/${params.id}`),
         loader: ({ params }) =>
           fetch(
             `https://hostel-management-server-steel.vercel.app/meals/${params.id}`

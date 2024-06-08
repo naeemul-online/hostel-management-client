@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import toast from "react-hot-toast";
 
 const SocialLogin = () => {
   const { googleLogin, gitHubLogin } = useContext(AuthContext);
@@ -22,7 +23,7 @@ const SocialLogin = () => {
         });
       })
       .catch((error) => {
-        console.log(error.message);
+        toast.error(error.message);
       });
   };
   const handleGitHubLogin = () => {
@@ -32,7 +33,7 @@ const SocialLogin = () => {
         navigate("/");
       })
       .catch((error) => {
-        console.log(error.message);
+        toast.error(error.message);
       });
   };
   return (

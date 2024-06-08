@@ -92,6 +92,7 @@ const AuthProvider = ({ children }) => {
     gitHubLogin,
     updateUserProfile,
     logOut,
+    setLoading
   };
 
   return (
