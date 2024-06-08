@@ -9,12 +9,12 @@ import PrivateRoute from "./PrivateRoute";
 import Private from "../../Pages/Private/Private";
 import MealDetails from "../../Pages/MealDetails/MealDetails";
 import Dashboard from "../../Layout/Dashboard/Dashboard";
-import Admin from "../../Pages/Dashborad/Admin/Admin";
-import User from "../../Pages/Dashborad/User/User";
 import RequestedMeal from "../../Pages/Dashborad/RequestedMeal/RequestedMeal";
 import MyReviews from "../../Pages/Dashborad/MyReviews/MyReviews";
 import PaymentHistory from "../../Pages/Dashborad/PaymentHistory/PaymentHistory";
 import MyProfile from "../../Pages/Dashborad/MyProfile/MyProfile";
+import AdminProfile from "../../Pages/Dashborad/AdminProfile/AdminProfile";
+import ManageUser from "../../Pages/Dashborad/ManageUser/ManageUser";
 
 export const router = createBrowserRouter([
   {
@@ -37,7 +37,9 @@ export const router = createBrowserRouter([
         path: "meal/:id",
         element: <MealDetails></MealDetails>,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/meals/${params.id}`),
+          fetch(
+            `https://hostel-management-server-steel.vercel.app/meals/${params.id}`
+          ),
       },
       {
         path: "private",
@@ -62,8 +64,12 @@ export const router = createBrowserRouter([
     element: <Dashboard></Dashboard>,
     children: [
       {
-        path: "admin",
-        element: <Admin></Admin>,
+        path: "adminProfile",
+        element: <AdminProfile></AdminProfile>,
+      },
+      {
+        path: "manageUser",
+        element: <ManageUser></ManageUser>,
       },
       {
         path: "myProfile",
