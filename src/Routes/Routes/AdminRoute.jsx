@@ -1,8 +1,9 @@
 import { Navigate, useLocation } from "react-router-dom";
 import useAdmin from "../../hooks/useAdmin";
 import useAuth from "../../hooks/useAuth";
+import PropTypes from "prop-types"; // ES6
 
-const AdminRoute = (children) => {
+const AdminRoute = ({ children }) => {
   const { user, loading } = useAuth();
   const [isAdmin, isAdminLoading] = useAdmin();
   const location = useLocation();
@@ -15,4 +16,7 @@ const AdminRoute = (children) => {
   return <Navigate to="/" state={{ from: location }} replace></Navigate>;
 };
 
+AdminRoute.propTypes = {
+  children: PropTypes.object,
+};
 export default AdminRoute;

@@ -18,7 +18,7 @@ const MealCard = ({ meal }) => {
           <span className="text-gray-900 font-bold">${meal.price}</span>
           <span className="text-yellow-500 font-bold">{meal.rating} ★</span>
         </div>
-        <Link to={`/meal/${meal.id}`} className="mt-4 btn text-white bg-orange-500 hover:bg-orange-600 rounded-md px-3 py-1">
+        <Link to={`/meal/${meal._id}`} className="mt-4 btn text-white bg-orange-500 hover:bg-orange-600 rounded-md px-3 py-1">
           Details
         </Link>
       </div>

@@ -26,7 +26,7 @@ const Dashboard = () => {
   // TODO: get isAdmin value from the database
   const [isAdmin] = useAdmin();
 
-  console.log(user);
+  // console.log(user);
   return (
     <div>
       {isAdmin ? (

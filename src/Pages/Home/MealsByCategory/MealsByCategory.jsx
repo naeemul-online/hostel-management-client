@@ -33,7 +33,7 @@ const MealsByCategory = () => {
           <TabPanel key={index}>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {filterMealsByCategory(category).map((meal) => (
-                <MealCard key={meal.id} meal={meal}></MealCard>
+                <MealCard key={meal._id} meal={meal}></MealCard>
               ))}
             </div>
           </TabPanel>
@@ -46,5 +46,5 @@ const MealsByCategory = () => {
 export default MealsByCategory;
 
 MealsByCategory.propTypes = {
-  meals: PropTypes.array,
+  meals: PropTypes.array
 };

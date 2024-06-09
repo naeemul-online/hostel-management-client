@@ -19,6 +19,7 @@ import AddMeal from "../../Pages/Dashborad/AddMeal/AddMeal";
 import AllMeal from "../../Pages/Dashborad/AllMeal/AllMeal";
 import AllReviews from "../../Pages/Dashborad/AllReviews/AllReviews";
 import ServeMeals from "../../Pages/Dashborad/ServeMeals/ServeMeals";
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -40,12 +41,12 @@ export const router = createBrowserRouter([
       {
         path: "meal/:id",
         element: <MealDetails></MealDetails>,
-        loader: ({ params }) =>
-          fetch(`http://localhost:5000/meals/${params.id}`),
         // loader: ({ params }) =>
-        //   fetch(
-        //     `https://hostel-management-server-steel.vercel.app/meals/${params.id}`
-        //   ),
+        //   fetch(`http://localhost:5000/meals/${params.id}`),
+        loader: ({ params }) =>
+          fetch(
+            `https://hostel-management-server-steel.vercel.app/meals/${params.id}`
+          ),
       },
       {
         path: "private",
@@ -71,7 +72,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "adminProfile",
-        element: <AdminProfile></AdminProfile>,
+        element: (
+          <AdminRoute>
+            <AdminProfile></AdminProfile>
+          </AdminRoute>
+        ),
       },
       {
         path: "manageUser",
@@ -79,15 +84,23 @@ export const router = createBrowserRouter([
       },
       {
         path: "addMeal",
-        element: <AddMeal></AddMeal>,
+        element: <AdminRoute><AddMeal></AddMeal></AdminRoute>,
       },
       {
         path: "allMeals",
-        element: <AllMeal></AllMeal>,
+        element: (
+          <AdminRoute>
+            <AllMeal></AllMeal>
+          </AdminRoute>
+        ),
       },
       {
         path: "serveMeals",
-        element: <ServeMeals></ServeMeals>,
+        element: (
+          <AdminRoute>
+            <ServeMeals></ServeMeals>
+          </AdminRoute>
+        ),
       },
       {
         path: "upcomingMeals",
@@ -95,7 +108,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "allReviews",
-        element: <AllReviews></AllReviews>,
+        element: (
+          <AdminRoute>
+            <AllReviews></AllReviews>
+          </AdminRoute>
+        ),
       },
       {
         path: "myProfile",

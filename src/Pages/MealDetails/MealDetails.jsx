@@ -5,10 +5,10 @@ import MealDetailCard from "../../components/MealDetailCard/MealDetailCard";
 const MealDetails = () => {
   const [meals] = useMeals();
   const { id } = useParams();
-  //   console.log("card id is", id);
+    // console.log("card id is", id);
   //   console.log(meals);
 
-  const mealById = meals.filter((meal) => meal.id == id);
+  const mealById = meals.filter((meal) => meal._id == id);
 
   return (
     <div>
