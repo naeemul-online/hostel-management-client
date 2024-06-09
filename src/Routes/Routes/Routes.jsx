@@ -15,6 +15,10 @@ import PaymentHistory from "../../Pages/Dashborad/PaymentHistory/PaymentHistory"
 import MyProfile from "../../Pages/Dashborad/MyProfile/MyProfile";
 import AdminProfile from "../../Pages/Dashborad/AdminProfile/AdminProfile";
 import ManageUser from "../../Pages/Dashborad/ManageUser/ManageUser";
+import AddMeal from "../../Pages/Dashborad/AddMeal/AddMeal";
+import AllMeal from "../../Pages/Dashborad/AllMeal/AllMeal";
+import AllReviews from "../../Pages/Dashborad/AllReviews/AllReviews";
+import ServeMeals from "../../Pages/Dashborad/ServeMeals/ServeMeals";
 
 export const router = createBrowserRouter([
   {
@@ -36,11 +40,12 @@ export const router = createBrowserRouter([
       {
         path: "meal/:id",
         element: <MealDetails></MealDetails>,
-        // loader: ({ params }) => fetch(`http://localhost:5000/meals/${params.id}`),
         loader: ({ params }) =>
-          fetch(
-            `https://hostel-management-server-steel.vercel.app/meals/${params.id}`
-          ),
+          fetch(`http://localhost:5000/meals/${params.id}`),
+        // loader: ({ params }) =>
+        //   fetch(
+        //     `https://hostel-management-server-steel.vercel.app/meals/${params.id}`
+        //   ),
       },
       {
         path: "private",
@@ -71,6 +76,26 @@ export const router = createBrowserRouter([
       {
         path: "manageUser",
         element: <ManageUser></ManageUser>,
+      },
+      {
+        path: "addMeal",
+        element: <AddMeal></AddMeal>,
+      },
+      {
+        path: "allMeals",
+        element: <AllMeal></AllMeal>,
+      },
+      {
+        path: "serveMeals",
+        element: <ServeMeals></ServeMeals>,
+      },
+      {
+        path: "upcomingMeals",
+        element: <UpcomingMeals></UpcomingMeals>,
+      },
+      {
+        path: "allReviews",
+        element: <AllReviews></AllReviews>,
       },
       {
         path: "myProfile",

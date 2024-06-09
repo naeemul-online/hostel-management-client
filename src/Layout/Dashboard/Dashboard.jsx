@@ -144,7 +144,7 @@ const Dashboard = () => {
                         className="flex items-center p-2 space-x-3 rounded-md"
                       >
                         <FaServer />
-                        <span>Serve Meals:</span>
+                        <span>Serve Meals</span>
                       </Link>
                     </li>
                     <li>
@@ -264,9 +264,7 @@ const Dashboard = () => {
                     </li>
                     <li>
                       <Link
-                        to="myReviews"
-                        rel="noopener noreferrer"
-                        href="#"
+                        to="myReviews"                      
                         className="flex items-center p-2 space-x-3 rounded-md"
                       >
                         <svg
@@ -296,9 +294,7 @@ const Dashboard = () => {
                   <ul className="pt-4 pb-2 space-y-1 text-sm">
                     <li>
                       <Link
-                        to="/"
-                        rel="noopener noreferrer"
-                        href="#"
+                        to="/"                    
                         className="flex items-center p-2 space-x-3 rounded-md"
                       >
                         <svg
@@ -313,11 +309,7 @@ const Dashboard = () => {
                       </Link>
                     </li>
                     <li>
-                      <a
-                        rel="noopener noreferrer"
-                        href="#"
-                        className="flex items-center p-2 space-x-3 rounded-md"
-                      >
+                      <a className="flex items-center p-2 space-x-3 rounded-md">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 512 512"

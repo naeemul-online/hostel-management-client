@@ -1,11 +1,24 @@
 import Swal from "sweetalert2";
-import useReviews from "../../../hooks/useReviews";
+// import useReviews from "../../../hooks/useReviews";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
+import useAuth from "../../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+
 const MyReviews = () => {
-  const [reviews, refetch] = useReviews();
-  const axiosSecure = useAxiosSecure()
-//   console.log(reviews);
+  const { user } = useAuth();
+  // console.log(user.email)
+  const axiosSecure = useAxiosSecure();
+
+  const { refetch, data: reviews = [] } = useQuery({
+    queryKey: ["reviews"],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/reviews/${user.email}`);
+      return res.data;
+    },
+  });
+
+  // console.log(reviews);
   const handleDeleteReview = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -16,17 +29,16 @@ const MyReviews = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
-      if (result.isConfirmed) {       
-        axiosSecure.delete(`reviews/${id}`)
-        .then(res => {
-            res
-            Swal.fire({
-                title: "Deleted!",
-                text: `Your review has been deleted.`,
-                icon: "success",
-              });
-            refetch()
-        })
+      if (result.isConfirmed) {
+        axiosSecure.delete(`reviews/${id}`).then((res) => {
+          res;
+          Swal.fire({
+            title: "Deleted!",
+            text: `Your review has been deleted.`,
+            icon: "success",
+          });
+          refetch();
+        });
       }
     });
   };
@@ -68,9 +80,9 @@ const MyReviews = () => {
                 <th>
                   <button className="btn btn-ghost btn-xs">Edit</button>
                 </th>
-                <th >
+                <th>
                   <button
-                    onClick={()=>handleDeleteReview(review._id)}
+                    onClick={() => handleDeleteReview(review._id)}
                     className="btn btn-ghost bg-red-400 btn-xs"
                   >
                     Delete
