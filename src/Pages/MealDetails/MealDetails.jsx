@@ -5,7 +5,7 @@ import MealDetailCard from "../../components/MealDetailCard/MealDetailCard";
 const MealDetails = () => {
   const [meals] = useMeals();
   const { id } = useParams();
-    // console.log("card id is", id);
+  // console.log("card id is", id);
   //   console.log(meals);
 
   const mealById = meals.filter((meal) => meal._id == id);
@@ -13,7 +13,7 @@ const MealDetails = () => {
   return (
     <div>
       {mealById.map((meal) => (
-        <MealDetailCard key={meal.id} meal={meal}></MealDetailCard>
+        <MealDetailCard key={meal._id} meal={meal}></MealDetailCard>
       ))}
     </div>
   );

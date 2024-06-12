@@ -20,6 +20,7 @@ import AllMeal from "../../Pages/Dashborad/AllMeal/AllMeal";
 import AllReviews from "../../Pages/Dashborad/AllReviews/AllReviews";
 import ServeMeals from "../../Pages/Dashborad/ServeMeals/ServeMeals";
 import AdminRoute from "./AdminRoute";
+import UpdateMeal from "../../Pages/Dashborad/UpdateMeal/UpdateMeal";
 
 export const router = createBrowserRouter([
   {
@@ -41,12 +42,12 @@ export const router = createBrowserRouter([
       {
         path: "meal/:id",
         element: <MealDetails></MealDetails>,
-        // loader: ({ params }) =>
-        //   fetch(`http://localhost:5000/meals/${params.id}`),
         loader: ({ params }) =>
-          fetch(
-            `https://hostel-management-server-steel.vercel.app/meals/${params.id}`
-          ),
+          fetch(`http://localhost:5000/meals/${params.id}`),
+        // loader: ({ params }) =>
+        //   fetch(
+        //     `https://hostel-management-server-steel.vercel.app/meals/${params.id}`
+        //   ),
       },
       {
         path: "private",
@@ -80,11 +81,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "manageUser",
-        element: <ManageUser></ManageUser>,
+        element: (
+          <AdminRoute>
+            <ManageUser></ManageUser>
+          </AdminRoute>
+        ),
       },
       {
         path: "addMeal",
-        element: <AdminRoute><AddMeal></AddMeal></AdminRoute>,
+        element: (
+          <AdminRoute>
+            <AddMeal></AddMeal>
+          </AdminRoute>
+        ),
       },
       {
         path: "allMeals",
@@ -93,6 +102,16 @@ export const router = createBrowserRouter([
             <AllMeal></AllMeal>
           </AdminRoute>
         ),
+      },
+      {
+        path: "allMeals/:id",
+        element: (
+          <AdminRoute>
+            <UpdateMeal></UpdateMeal>
+          </AdminRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/meals/${params.id}`),
       },
       {
         path: "serveMeals",

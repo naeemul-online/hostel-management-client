@@ -1,27 +1,37 @@
 import { useForm } from "react-hook-form";
-import Swal from "sweetalert2";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
-
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import Swal from "sweetalert2";
+import { useLoaderData } from "react-router-dom";
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
-const AddMeal = () => {
+const UpdateMeal = () => {
   const { user } = useAuth();
+  const {
+    _id,
+    category,
+    price,
+    title,
+    description,
+    ingredients,
+    reviews,
+    rating,
+    postTime,
+    likes,
+    image,
+  } = useLoaderData();
 
+  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
-  console.log(errors);
-  const axiosPublic = useAxiosPublic();
-  const axiosSecure = useAxiosSecure();
-
-  //   console.log(errors);
-
+    console.log(errors);
   const onSubmit = async (data) => {
     console.log("clicked");
     console.log(data);
@@ -44,11 +54,11 @@ const AddMeal = () => {
         reviews: data.reviews,
         rating: data.rating,
         postTime: data.postTime,
-        likes: parseFloat(data.likes),
+        likes: data.likes,
         image: res.data.data.display_url,
       };
       console.log(mealsItem);
-      const menuRes = await axiosSecure.post("/meals", mealsItem);
+      const menuRes = await axiosSecure.patch(`/meals/:${_id}`, mealsItem);
       console.log(menuRes.data);
       if (menuRes.data.insertedId) {
         // show popup
@@ -56,7 +66,7 @@ const AddMeal = () => {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: `${data.title} has been added`,
+          title: `${data.title} has been updated`,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -65,7 +75,6 @@ const AddMeal = () => {
     }
     console.log(res.data);
   };
-
   return (
     <div className="container px-8">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -100,7 +109,7 @@ const AddMeal = () => {
           </div>
           <input
             type="text"
-            placeholder="Meal Title"
+            defaultValue={title}
             className="input input-bordered w-full "
             {...register("title", { required: true })}
           />
@@ -113,7 +122,7 @@ const AddMeal = () => {
           </div>
           <input
             type="text"
-            placeholder="Ingredients"
+            defaultValue={ingredients}
             className="input input-bordered w-full "
             {...register("ingredients", { required: true })}
           />
@@ -127,14 +136,14 @@ const AddMeal = () => {
               <span className="label-text">Select a category</span>
             </div>
             <select
-              defaultValue="default"
+              defaultValue={category}
               className="select select-bordered w-full"
               {...register("category", { required: true })}
             >
               <option disabled value="default">
                 Select a category
               </option>
-              <option value="reakfast">Breakfast</option>
+              <option value="Breakfast">Breakfast</option>
               <option value="Lunch">Lunch</option>
               <option value="Dinner">Dinner</option>
             </select>
@@ -147,7 +156,7 @@ const AddMeal = () => {
             </div>
             <input
               type="text"
-              placeholder="price"
+              defaultValue={price}
               className="input input-bordered w-full "
               {...register("price", { required: true })}
             />
@@ -160,6 +169,7 @@ const AddMeal = () => {
             </div>
             <input
               type="text"
+              defaultValue={rating}
               placeholder="Rating"
               className="input input-bordered w-full "
               {...register("rating", { required: true })}
@@ -172,6 +182,7 @@ const AddMeal = () => {
             </div>
             <input
               type="date"
+              defaultValue={postTime}
               placeholder="Post Time"
               className="input input-bordered w-full "
               {...register("postTime", { required: true })}
@@ -183,8 +194,8 @@ const AddMeal = () => {
               <span className="label-text">Likes</span>
             </div>
             <input
-              type="text"
-              placeholder="Likes"
+              type="number"
+              defaultValue={likes}
               className="input input-bordered w-full "
               {...register("likes", { required: true })}
             />
@@ -197,7 +208,7 @@ const AddMeal = () => {
           </div>
           <input
             type="text"
-            placeholder="Reviews"
+            defaultValue={reviews}
             className="input input-bordered w-full "
             {...register("reviews", { required: true })}
           />
@@ -210,6 +221,7 @@ const AddMeal = () => {
           <textarea
             className="textarea textarea-bordered h-24"
             placeholder="Description"
+            defaultValue={description}
             {...register("description", { required: true })}
           ></textarea>
         </label>
@@ -224,6 +236,8 @@ const AddMeal = () => {
 
         <input
           type="submit"
+          value="Update"
+          defaultValue={image}
           className="btn bg-orange-500 hover:bg-orange-600"
         ></input>
       </form>
@@ -231,4 +245,4 @@ const AddMeal = () => {
   );
 };
 
-export default AddMeal;
+export default UpdateMeal;
